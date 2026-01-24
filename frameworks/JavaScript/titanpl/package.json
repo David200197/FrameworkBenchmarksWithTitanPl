@@ -1,0 +1,28 @@
+{
+  "name": "titanpl",
+  "version": "1.0.0",
+  "description": "A Titan Planet server",
+  "type": "module",
+  "titan": {
+    "template": "js"
+  },
+  "dependencies": {
+    "@titanpl/core": "latest",
+    "chokidar": "^5.0.0",
+    "esbuild": "^0.27.2"
+  },
+  "scripts": {
+    "build": "titan build",
+    "dev": "titan dev",
+    "start": "titan start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-plugin-titanpl": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "framework": "titanpl",
+  "maintainers": ["ezet-galaxy"],
+  "tests": [{
+    "default": {
+      "json_url": "/json",
+      "plaintext_url": "/plaintext",
+      "port": 3000,
+      "approach": "Realistic",
+      "classification": "Micro",
+      "database": "None",
+      "framework": "titanpl",
+      "language": "JavaScript",
+      "flavor": "Rust",
+      "orm": "Raw",
+      "platform": "Axum",
+      "webserver": "None",
+      "os": "Linux",
+      "database_os": "Linux",
+      "display_name": "titanpl",
+      "notes": "JavaScript-first framework with Rust+Axum backend, compiles to native binary",
+      "versus": "axum"
+    }
+  }]
+}
