@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY --from=builder /titanpl/dist/server /app/server
+COPY --from=builder /titanpl/server/target/release/titan-server /app/server
 
 # TechEmpower database connection
 ENV DATABASE_URL="postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432/hello_world"

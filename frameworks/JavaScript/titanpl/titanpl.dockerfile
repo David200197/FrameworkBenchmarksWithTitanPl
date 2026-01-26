@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the compiled binary from builder
-COPY --from=builder /titanpl/dist/server /app/server
+COPY --from=builder /titanpl/server/target/release/titan-server /app/server
 
 # Expose the port
 EXPOSE 8080
