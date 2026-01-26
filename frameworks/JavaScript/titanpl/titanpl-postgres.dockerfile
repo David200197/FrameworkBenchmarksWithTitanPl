@@ -1,5 +1,5 @@
 # Build stage
-FROM rust:1.76-slim-bookworm AS builder
+FROM rust:1.85-slim-bookworm AS builder
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -14,6 +14,9 @@ WORKDIR /titanpl
 RUN npm install -g @ezetgalaxy/titan
 
 COPY . .
+
+# Install project dependencies (esbuild, etc)
+RUN npm install
 
 RUN titan build --release
 

@@ -36,6 +36,4 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-
-# mkctx - generated context
 mkctx/
