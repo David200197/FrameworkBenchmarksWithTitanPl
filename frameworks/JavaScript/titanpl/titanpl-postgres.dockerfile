@@ -38,4 +38,6 @@ ENV DATABASE_URL="postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432
 
 EXPOSE 8080
 
+ENV PORT=8080 
+
 CMD ["./server"]

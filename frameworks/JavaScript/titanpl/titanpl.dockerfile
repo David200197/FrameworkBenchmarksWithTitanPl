@@ -40,5 +40,7 @@ COPY --from=builder /titanpl/server/target/release/titan-server /app/server
 # Expose the port
 EXPOSE 8080
 
+ENV PORT=8080 
+
 # Run the server
 CMD ["./server"]
