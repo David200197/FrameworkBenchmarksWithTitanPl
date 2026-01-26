@@ -1,7 +1,6 @@
 # Build stage
 FROM rust:1.76-slim-bookworm AS builder
 
-# Install Node.js for Titan CLI
 RUN apt-get update && apt-get install -y \
     curl \
     pkg-config \
@@ -12,13 +11,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /titanpl
 
-# Install Titan CLI globally
 RUN npm install -g @ezetgalaxy/titan
 
-# Copy project files
 COPY . .
 
-# Initialize and build the project
 RUN titan build --release
 
 # Runtime stage
@@ -27,15 +23,16 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl3 \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy the compiled binary from builder
 COPY --from=builder /titanpl/dist/server /app/server
 
-# Expose the port
+# TechEmpower database connection
+ENV DATABASE_URL="postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432/hello_world"
+
 EXPOSE 8080
 
-# Run the server
 CMD ["./server"]

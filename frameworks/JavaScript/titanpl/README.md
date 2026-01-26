@@ -1,27 +1,57 @@
-# Titan Planet (titanpl) Benchmarking Test
+# titanpl Benchmarking Test
 
-Titan Planet is a JavaScript-first backend framework that embeds JS actions into a Rust + Axum server and ships as a single native binary. Routes are compiled to static metadata; only actions run in the embedded JS runtime.
+This is the titanpl portion of a [benchmarking test suite](../) comparing a variety of web development platforms.
 
-**Key Features:**
-- JavaScript developer experience
-- Rust + Axum performance
-- Native binary output (no Node.js in production)
-- Zero configuration
+## Test URLs
 
-### Test URLs
+### JSON
 
-* JSON Serialization: http://localhost:3000/json
-* Plaintext: http://localhost:3000/plaintext
+    http://localhost:8080/json
 
-### How It Works
+### Plaintext
 
-Titan Planet compiles JavaScript actions into a Rust binary. The routing is handled natively by Axum, while the action logic runs in an embedded V8 JavaScript runtime.
+    http://localhost:8080/plaintext
 
-### Source
+### DB (Single Query)
 
-* [Titan Planet GitHub](https://github.com/ezet-galaxy/titanpl)
-* [Documentation](https://titan-docs-ez.vercel.app/docs)
+    http://localhost:8080/db
 
-### Maintainers
+### Queries (Multiple Queries)
 
-* [@ezet-galaxy](https://github.com/ezet-galaxy)
+    http://localhost:8080/queries?queries=
+
+### Fortunes
+
+    http://localhost:8080/fortunes
+
+### Updates
+
+    http://localhost:8080/updates?queries=
+
+### Cached Queries
+
+    http://localhost:8080/cached-queries?count=
+
+## Infrastructure
+
+titanpl is a JavaScript-first web framework that compiles to a native binary using Rust and Axum.
+
+- **Language**: JavaScript
+- **Runtime**: Rust/Axum (compiled to native binary)
+- **Database**: PostgreSQL (for DB tests)
+
+## Test Types
+
+| Type | Implementation |
+|------|----------------|
+| JSON | titanpl |
+| Plaintext | titanpl |
+| DB | Raw PostgreSQL |
+| Query | Raw PostgreSQL |
+| Fortune | Raw PostgreSQL |
+| Update | Raw PostgreSQL |
+| Cached | In-memory cache |
+
+## Maintainer
+
+- [@ezet-galaxy](https://github.com/ezet-galaxy)
