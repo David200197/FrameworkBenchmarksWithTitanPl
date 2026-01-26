@@ -1,5 +1,5 @@
 # Build stage
-FROM rust:1.85-slim-bookworm AS builder
+FROM rust:latest AS builder
 
 # Install Node.js for Titan CLI
 RUN apt-get update && apt-get install -y \
