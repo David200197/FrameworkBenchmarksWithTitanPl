@@ -21,26 +21,26 @@ COPY . .
 # Install project dependencies (esbuild, etc)
 RUN npm install
 
-# Initialize and build the project
+# Build the project
 RUN titan build --release
 
-# Runtime stage
-FROM debian:bookworm-slim
+# Runtime stage - keep Node.js for titan start
+FROM node:20-slim
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl3 \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# Install Titan CLI
+RUN npm install -g @ezetgalaxy/titan
 
-# Copy the compiled binary from builder
-COPY --from=builder /titanpl/server/target/release/titan-server /app/server
+WORKDIR /titanpl
 
-# Expose the port
+# Copy the entire built project
+COPY --from=builder /titanpl /titanpl
+
 EXPOSE 8080
 
-ENV PORT=8080 
-
-# Run the server
-CMD ["./server"]
+# Use titan start
+CMD ["titan", "start"]

@@ -15,13 +15,12 @@ RUN npm install -g @ezetgalaxy/titan
 
 COPY . .
 
-# Install project dependencies (esbuild, etc)
 RUN npm install
 
 RUN titan build --release
 
-# Runtime stage
-FROM debian:bookworm-slim
+# Runtime stage - keep Node.js for titan start
+FROM node:20-slim
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
@@ -29,15 +28,17 @@ RUN apt-get update && apt-get install -y \
     libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# Install Titan CLI
+RUN npm install -g @ezetgalaxy/titan
 
-COPY --from=builder /titanpl/server/target/release/titan-server /app/server
+WORKDIR /titanpl
+
+# Copy the entire built project
+COPY --from=builder /titanpl /titanpl
 
 # TechEmpower database connection
 ENV DATABASE_URL="postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432/hello_world"
 
 EXPOSE 8080
 
-ENV PORT=8080 
-
-CMD ["./server"]
+CMD ["titan", "start"]
