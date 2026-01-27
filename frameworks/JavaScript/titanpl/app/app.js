@@ -19,6 +19,6 @@ t.get("/updates").action("updates")
 t.get("/plaintext").action("plaintext")
 
 // Test 7: Cached Queries
-t.get("/cached-queries").action("cached-queries")
+t.get("/cached-queries").action("cachedQueries")
 
 t.start(8080, "titanpl running on port 8080");

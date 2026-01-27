@@ -3,8 +3,9 @@ use axum::{
     Router,
     body::{Body, to_bytes},
     extract::State,
-    http::{Request, StatusCode},
-    response::{IntoResponse, Json},
+    http::{Request, StatusCode, header::SERVER, HeaderValue},
+    middleware::{self, Next},
+    response::{IntoResponse, Json, Response},
     routing::any,
 };
 use serde_json::Value;
@@ -278,6 +279,15 @@ if let Some(is_resp) = result_json.get("_isResponse") {
     Json(result_json).into_response()
 }
 
+// Middleware: Add Server header to all responses
+async fn add_server_header(request: Request<Body>, next: Next) -> Response {
+    let mut response = next.run(request).await;
+    response.headers_mut().insert(
+        SERVER,
+        HeaderValue::from_static("titanpl")
+    );
+    response
+}
 
 // Entrypoint ---------------------------------------------------------------
 
@@ -320,7 +330,8 @@ async fn main() -> Result<()> {
     let app = Router::new()
         .route("/", any(root_route))
         .fallback(any(dynamic_route))
-        .with_state(state);
+        .with_state(state)
+        .layer(middleware::from_fn(add_server_header));
 
     let listener = TcpListener::bind(format!("0.0.0.0:{}", port)).await?;
 

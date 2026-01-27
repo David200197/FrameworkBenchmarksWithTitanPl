@@ -1,0 +1,1 @@
+timeout 30m ./tfb --test titanpl --type json plaintext 2>&1 | tee tfb-benchmark.log

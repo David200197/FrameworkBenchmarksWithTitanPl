@@ -3,7 +3,7 @@
 // Response: {"message":"Hello, World!"}
 
 export function json(req) {
-    return {
+    return t.response.json({
         message: "Hello, World!"
-    };
+    })
 }
