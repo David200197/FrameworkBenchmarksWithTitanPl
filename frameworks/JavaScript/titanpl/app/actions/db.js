@@ -4,16 +4,20 @@
 
 export function db(req) {
     const id = Math.floor(Math.random() * 10000) + 1;
-    
+
     // eslint-disable-next-line no-undef
     const conn = t.db.connect(proccess.env.DATABASE_URL);
     const rows = conn.query(
-        "SELECT id, \"randomNumber\" FROM world WHERE id = $1", 
+        "SELECT id, \"randomNumber\" FROM world WHERE id = $1",
         [id]
     );
-    
-    return {
+
+    return t.response.json({
         id: rows[0].id,
         randomNumber: rows[0].randomNumber
-    };
+    }, {
+        headers: {
+            Server: "titanpl"
+        }
+    })
 }

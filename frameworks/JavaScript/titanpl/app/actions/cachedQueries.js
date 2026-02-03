@@ -8,12 +8,12 @@ function initCache() {
     // Check if cache already exists
     const cached = t.ls.get(CACHE_KEY);
     if (cached) return;
-    
+
     // Load from database and cache
     // eslint-disable-next-line no-undef
     const conn = t.db.connect(proccess.env.DATABASE_URL);
     const rows = conn.query("SELECT id, \"randomNumber\" FROM cachedworld");
-    
+
     const worldCache = {};
     for (const row of rows) {
         worldCache[row.id] = {
@@ -21,7 +21,7 @@ function initCache() {
             randomNumber: row.randomNumber
         };
     }
-    
+
     // Serialize and store
     t.ls.set(CACHE_KEY, JSON.stringify(worldCache));
 }
@@ -34,20 +34,24 @@ function getCache() {
 
 export function cachedQueries(req) {
     initCache();
-    
+
     const worldCache = getCache();
-    
+
     // Parse and validate count parameter (1-500)
     let count = parseInt(req.query.count) || 1;
     if (count < 1) count = 1;
     if (count > 500) count = 500;
-    
+
     const results = [];
-    
+
     for (let i = 0; i < count; i++) {
         const id = Math.floor(Math.random() * 10000) + 1;
         results.push(worldCache[id]);
     }
-    
-    return results;
+
+    return t.response.json(results, {
+        headers: {
+            Server: "titanpl"
+        }
+    })
 }

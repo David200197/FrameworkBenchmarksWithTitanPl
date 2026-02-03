@@ -5,5 +5,9 @@
 export function json(req) {
     return t.response.json({
         message: "Hello, World!"
+    }, {
+        headers: {
+            Server: "titanpl"
+        }
     })
 }

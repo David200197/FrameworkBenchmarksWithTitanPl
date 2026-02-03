@@ -6,20 +6,20 @@ export function fortunes(req) {
     // eslint-disable-next-line no-undef
     const conn = t.db.connect(proccess.env.DATABASE_URL);
     const fortunes = conn.query("SELECT id, message FROM fortune");
-    
+
     // Add additional fortune (required by the test)
     fortunes.push({
         id: 0,
         message: "Additional fortune added at request time."
     });
-    
+
     // Sort by message (string comparison)
     fortunes.sort((a, b) => {
         if (a.message < b.message) return -1;
         if (a.message > b.message) return 1;
         return 0;
     });
-    
+
     // Escape HTML (XSS protection - REQUIRED)
     const escapeHtml = (str) => {
         return String(str)
@@ -29,14 +29,18 @@ export function fortunes(req) {
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#x27;');
     };
-    
+
     // Generate HTML
     let rows = '';
     for (const f of fortunes) {
         rows += `<tr><td>${f.id}</td><td>${escapeHtml(f.message)}</td></tr>`;
     }
-    
+
     const html = `<!DOCTYPE html><html><head><title>Fortunes</title></head><body><table><tr><th>id</th><th>message</th></tr>${rows}</table></body></html>`;
-    
-    return t.response.html(html);
+
+    return t.response.html(html, {
+        headers: {
+            Server: "titanpl"
+        }
+    });
 }

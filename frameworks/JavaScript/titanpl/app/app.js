@@ -1,4 +1,4 @@
-import t from "../titan/titan.js";
+import t from "@titan/route";
 
 // Test 1: JSON Serialization
 t.get("/json").action("json")

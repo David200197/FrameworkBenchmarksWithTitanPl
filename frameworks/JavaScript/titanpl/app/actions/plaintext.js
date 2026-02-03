@@ -3,5 +3,9 @@
 // Response: Hello, World!
 
 export function plaintext(req) {
-    return t.response.text("Hello, World!");
+    return t.response.text("Hello, World!", {
+        headers: {
+            Server: "titanpl"
+        }
+    });
 }
