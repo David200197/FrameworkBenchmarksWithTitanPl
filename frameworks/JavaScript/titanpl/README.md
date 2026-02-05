@@ -52,6 +52,22 @@ titanpl is a JavaScript-first web framework that compiles to a native binary usi
 | Update | Raw PostgreSQL |
 | Cached | In-memory cache |
 
+## Commands
+```
+# Verify
+./tfb --test titanpl --mode verify --type json plaintext
+./tfb --test titanpl-postgres --mode verify --type json plaintext db query fortune update cached-query
+./tfb --mode verify --test titanpl-postgres fastify-postgres express-postgres hono-postgres elysia-postgres --type json plaintext db query fortune update cached-query
+
+# Simple Comparation
+./tfb --mode benchmark --test titanpl fastify express hono elysia --type json plaintext
+
+# Complex Comparation
+./tfb --mode benchmark --test titanpl-postgres fastify-postgres express-postgres hono-postgres elysia-postgres --type json plaintext db query fortune update cached-query
+
+# 
+```
+
 ## Maintainer
 
 - [@ezet-galaxy](https://github.com/ezet-galaxy)

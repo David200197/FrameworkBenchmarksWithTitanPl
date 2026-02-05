@@ -2,8 +2,10 @@
 // Route: GET /json
 // Response: {"message":"Hello, World!"}
 
+import { response } from "@titanpl/core"
+
 export function json(req) {
-    return t.response.json({
+    return response.json({
         message: "Hello, World!"
     }, {
         headers: {

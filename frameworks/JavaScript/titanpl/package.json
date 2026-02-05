@@ -18,6 +18,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
+  "imports": {
+    "#titan/route": "./titan/titan.js"
+  },
   "devDependencies": {
     "eslint": "^9.39.2",
     "eslint-plugin-titanpl": "latest"
