@@ -2,12 +2,9 @@
 // Route: GET /fortunes
 // Response: HTML table with sorted fortunes
 
-import { db } from "@titan/native"
-import { response } from "@titanpl/core"
-
 export function fortunes(req) {
-    // eslint-disable-next-line no-undef, titanpl/drift-only-titan-async
-    const conn = drift(db.connect(process.env.DATABASE_URL));
+    // eslint-disable-next-line no-undef
+    const conn = t.db.connect(process.env.DATABASE_URL);
     // eslint-disable-next-line titanpl/drift-only-titan-async
     const fortunes = drift(conn.query("SELECT id, message FROM fortune"));
 
@@ -42,7 +39,7 @@ export function fortunes(req) {
 
     const html = `<!DOCTYPE html><html><head><title>Fortunes</title></head><body><table><tr><th>id</th><th>message</th></tr>${rows}</table></body></html>`;
 
-    return response.html(html, {
+    return t.response.html(html, {
         headers: {
             Server: "titanpl"
         }

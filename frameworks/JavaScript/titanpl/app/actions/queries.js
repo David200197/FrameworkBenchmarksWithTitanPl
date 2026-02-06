@@ -2,9 +2,6 @@
 // Route: GET /queries?queries=N
 // Response: [{"id":1,"randomNumber":2}, ...]
 
-import { db } from "@titan/native"
-import { response } from "@titanpl/core"
-
 export function queries(req) {
     // Parse and validate queries parameter (1-500)
     let count = parseInt(req.query.queries) || 1;
@@ -12,7 +9,7 @@ export function queries(req) {
     if (count > 500) count = 500;
 
     // eslint-disable-next-line no-undef, titanpl/drift-only-titan-async
-    const conn = drift(db.connect(process.env.DATABASE_URL));
+    const conn = t.db.connect(process.env.DATABASE_URL);
     const results = [];
 
     // IMPORTANT: Each query must be individual, DO NOT use IN clause
@@ -20,16 +17,17 @@ export function queries(req) {
         const id = Math.floor(Math.random() * 10000) + 1;
         // eslint-disable-next-line titanpl/drift-only-titan-async
         const rows = drift(conn.query(
-            "SELECT id, \"randomNumber\" FROM world WHERE id = $1",
-            [id]
+            `SELECT id, "randomNumber" FROM world WHERE id = ${id}`
         ));
+        // eslint-disable-next-line no-undef
+        t.log(process.env.DATABASE_URL, rows)
         results.push({
             id: rows[0].id,
             randomNumber: rows[0].randomNumber
         });
     }
 
-    return response.json(results, {
+    return t.response.json(results, {
         headers: {
             Server: "titanpl"
         }
