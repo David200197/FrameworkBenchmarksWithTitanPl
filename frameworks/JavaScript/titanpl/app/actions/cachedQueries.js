@@ -13,15 +13,13 @@ function initCache() {
     // eslint-disable-next-line no-undef, titanpl/drift-only-titan-async
     const conn = t.db.connect(process.env.DATABASE_URL);
     // eslint-disable-next-line titanpl/drift-only-titan-async
-    const rows = drift(conn.query("SELECT id, \"randomNumber\" FROM cachedworld"));
-    // eslint-disable-next-line no-undef
-    t.log(process.env.DATABASE_URL, rows)
+    const rows = drift(conn.query("SELECT id, randomnumber FROM cachedworld"));
 
     const worldCache = {};
     for (const row of rows) {
         worldCache[row.id] = {
             id: row.id,
-            randomNumber: row.randomNumber
+            randomNumber: row.randomnumber
         };
     }
 

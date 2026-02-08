@@ -9,15 +9,12 @@ export function db(req) {
     const conn = t.db.connect(process.env.DATABASE_URL);
     // eslint-disable-next-line titanpl/drift-only-titan-async
     const rows = drift(conn.query(
-        `SELECT id, "randomNumber" FROM world WHERE id = ${id}`,
+        `SELECT id, randomnumber FROM world WHERE id = ${id}`,
     ));
-
-    // eslint-disable-next-line no-undef
-    t.log(process.env.DATABASE_URL, rows)
 
     return t.response.json({
         id: rows[0].id,
-        randomNumber: rows[0].randomNumber
+        randomNumber: rows[0].randomnumber
     }, {
         headers: {
             Server: "titanpl"

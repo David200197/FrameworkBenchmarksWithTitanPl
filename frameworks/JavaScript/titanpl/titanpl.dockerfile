@@ -21,6 +21,8 @@ COPY . .
 # Install project dependencies (esbuild, etc)
 RUN npm install
 
+RUN npm rebuild @titanpl/core --build-from-source
+
 # Build the project
 RUN titan build --release
 

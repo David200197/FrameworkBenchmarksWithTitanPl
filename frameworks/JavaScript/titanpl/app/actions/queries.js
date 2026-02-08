@@ -17,13 +17,11 @@ export function queries(req) {
         const id = Math.floor(Math.random() * 10000) + 1;
         // eslint-disable-next-line titanpl/drift-only-titan-async
         const rows = drift(conn.query(
-            `SELECT id, "randomNumber" FROM world WHERE id = ${id}`
+            `SELECT id, randomnumber FROM world WHERE id = ${id}`
         ));
-        // eslint-disable-next-line no-undef
-        t.log(process.env.DATABASE_URL, rows)
         results.push({
             id: rows[0].id,
-            randomNumber: rows[0].randomNumber
+            randomNumber: rows[0].randomnumber
         });
     }
 

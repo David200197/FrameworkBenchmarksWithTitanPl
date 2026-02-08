@@ -18,10 +18,8 @@ export function updates(req) {
         // 1. Read the row
         // eslint-disable-next-line titanpl/drift-only-titan-async
         const rows = drift(conn.query(
-            `SELECT id, "randomNumber" FROM world WHERE id = ${id}`
+            `SELECT id, randomnumber FROM world WHERE id = ${id}`
         ));
-        // eslint-disable-next-line no-undef
-        t.log(process.env.DATABASE_URL, rows)
 
         // 2. Generate new randomNumber
         const newRandomNumber = Math.floor(Math.random() * 10000) + 1;
@@ -29,7 +27,7 @@ export function updates(req) {
         // 3. Update in DB
         // eslint-disable-next-line titanpl/drift-only-titan-async
         drift(conn.query(
-            `UPDATE world SET "randomNumber" = ${newRandomNumber} WHERE id = ${id}`
+            `UPDATE world SET randomnumber = ${newRandomNumber} WHERE id = ${id}`
         ));
 
         results.push({
