@@ -21,17 +21,18 @@ COPY . .
 # Install project dependencies (esbuild, etc)
 RUN npm install
 
-RUN npm rebuild @titanpl/core --build-from-source
-
 # Build the project
 RUN titan build --release
 
-# Runtime stage - keep Node.js for titan start
-FROM node:20-slim
+# Runtime stage - Ubuntu 24.04 has GLIBC 2.39 (required by precompiled libtitan_core.so)
+FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
-    libssl3 \
+    libssl3t64 \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Titan CLI
@@ -44,5 +45,4 @@ COPY --from=builder /titanpl /titanpl
 
 EXPOSE 8080
 
-# Use titan start
 CMD ["titan", "start"]

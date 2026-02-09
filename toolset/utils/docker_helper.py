@@ -19,11 +19,11 @@ class DockerHelper:
         self.benchmarker = benchmarker
 
         self.client = docker.DockerClient(
-            base_url=self.benchmarker.config.client_docker_host)
+            base_url=self.benchmarker.config.client_docker_host, timeout=3000)
         self.server = docker.DockerClient(
-            base_url=self.benchmarker.config.server_docker_host)
+            base_url=self.benchmarker.config.server_docker_host, timeout=3000)
         self.database = docker.DockerClient(
-            base_url=self.benchmarker.config.database_docker_host)
+            base_url=self.benchmarker.config.database_docker_host, timeout=3000)
 
     def __build(self, base_url, path, build_log_file, log_prefix, dockerfile,
                 tag, buildargs={}):
@@ -62,8 +62,8 @@ class DockerHelper:
                                 if re.match(r'^Step \d+\/\d+', line) else '')
                     # Kill docker builds if they exceed 60 mins. This will only
                     # catch builds that are still printing output.
-                    if self.benchmarker.time_logger.time_since_start() > 3600:
-                        log("Build time exceeded 60 minutes",
+                    if self.benchmarker.time_logger.time_since_start() > 72000:
+                        log("Build time exceeded 120 minutes",
                             prefix=log_prefix,
                             file=build_log,
                             color=Fore.RED)
@@ -100,7 +100,15 @@ class DockerHelper:
                         self.server.images.remove(image.id, force=True)
                     except Exception:
                         pass
-        self.server.images.prune()
+        try:
+
+            self.server.images.prune()
+
+        except Exception as e:
+
+            print(f'Warning: Docker image prune failed (timeout?): {e}')
+
+            print('Continuing with next test...')
         self.database.images.prune()
 
     def build(self, test, build_log_dir=os.devnull):
@@ -307,7 +315,13 @@ class DockerHelper:
         self.database.containers.prune()
         if is_multi_setup:
             # Then we're on a 3 machine set up
-            self.server.containers.prune()
+            try:
+
+                self.server.containers.prune()
+
+            except Exception as e:
+
+                print(f'Warning: Docker container prune failed: {e}')
             self.client.containers.prune()
 
     def build_databases(self):
