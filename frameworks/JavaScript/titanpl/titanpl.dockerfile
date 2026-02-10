@@ -43,6 +43,9 @@ WORKDIR /titanpl
 # Copy the entire built project
 COPY --from=builder /titanpl /titanpl
 
+ENV TITAN_BENCHMARK=1
+ENV MIMALLOC_LARGE_OS_PAGES=1
+
 EXPOSE 8080
 
 CMD ["titan", "start"]
