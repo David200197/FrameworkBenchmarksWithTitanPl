@@ -39,6 +39,8 @@ WORKDIR /titanpl
 # Copy the entire built project
 COPY --from=builder /titanpl /titanpl
 
+ENV MIMALLOC_LARGE_OS_PAGES=1
+
 # TechEmpower database connection
 ENV DATABASE_URL="postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432/hello_world"
 
